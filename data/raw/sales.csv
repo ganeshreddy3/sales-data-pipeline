@@ -1,0 +1,11 @@
+OrderID,CustomerID,Product,Category,Price,Quantity,Date
+1001,C001,Laptop,Electronics,50000,1,2026-06-20
+1002,C002,Mouse,Accessories,500,2,2026-06-20
+1003,C003,Keyboard,Accessories,1200,1,2026-06-20
+1004,C004,Monitor,Electronics,15000,1,2026-06-20
+1005,C005,Headphones,Accessories,2500,2,2026-06-20
+1006,C006,Laptop,Electronics,50000,1,2026-06-21
+1007,C007,Mouse,Accessories,500,3,2026-06-21
+1008,C008,Keyboard,Accessories,1200,2,2026-06-21
+1009,C009,Monitor,Electronics,15000,1,2026-06-21
+1010,C010,Headphones,Accessories,2500,1,2026-06-21
