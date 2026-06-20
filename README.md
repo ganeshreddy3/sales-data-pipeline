@@ -16,5 +16,3 @@ An end-to-end Data Engineering project that:
 - PostgreSQL
 - SQLAlchemy
 - Streamlit
-- Apache Airflow
-- Docker
