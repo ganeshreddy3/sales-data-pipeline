@@ -6,26 +6,24 @@ Database connection module.
 
 from sqlalchemy import create_engine
 
+from config.config import (
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_HOST,
+    DB_PORT,
+    DB_NAME
+)
+
 
 def get_database_engine():
 
-    username = "postgres"
-
-    password = "postgres"
-
-    host = "localhost"
-
-    port = "5432"
-
-    database = "sales_db"
-
     database_url = (
         f"postgresql://"
-        f"{username}:"
-        f"{password}@"
-        f"{host}:"
-        f"{port}/"
-        f"{database}"
+        f"{DB_USERNAME}:"
+        f"{DB_PASSWORD}@"
+        f"{DB_HOST}:"
+        f"{DB_PORT}/"
+        f"{DB_NAME}"
     )
 
     engine = create_engine(
