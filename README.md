@@ -1,6 +1,40 @@
-# How to Run the Project
+# 🚀 How to Run the Project
 
-## 1. Start PostgreSQL
+## Prerequisites
+
+Make sure the following are installed:
+
+* Python 3.12+
+* PostgreSQL
+* Apache Airflow
+* Git
+
+---
+
+# 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd sales-data-pipeline
+```
+
+---
+
+# 2. Activate Project Environment
+
+```bash
+source venv/bin/activate
+```
+
+Install dependencies if required:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# 3. Start PostgreSQL
 
 ```bash
 sudo systemctl start postgresql
@@ -20,33 +54,52 @@ active (running)
 
 ---
 
-## 2. Run the ETL Pipeline
-
-Open a terminal:
+# 4. Run the Sales ETL Pipeline
 
 ```bash
-cd ~/Documents/Projects/sales-data-pipeline
-
-source venv/bin/activate
-
 python main.py
 ```
 
-This will:
+This pipeline:
 
-* Extract data from CSV
-* Transform and clean data
-* Save processed data
-* Load data into PostgreSQL
+```text
+sales.csv
+   ↓
+Extract
+   ↓
+Transform
+   ↓
+Load PostgreSQL
+```
 
 ---
 
-## 3. Launch the Streamlit Dashboard
+# 5. Run Fake Store API Pipeline
+
+```bash
+python test_products_load.py
+```
+
+This pipeline:
+
+```text
+Fake Store API
+      ↓
+Extract
+      ↓
+Transform
+      ↓
+Load PostgreSQL
+```
+
+---
+
+# 6. Launch Streamlit Dashboard
 
 Open a new terminal:
 
 ```bash
-cd ~/Documents/Projects/sales-data-pipeline
+cd sales-data-pipeline
 
 source venv/bin/activate
 
@@ -61,9 +114,9 @@ http://localhost:8501
 
 ---
 
-## 4. Start Apache Airflow
+# 7. Start Apache Airflow
 
-### Terminal 1 - Webserver
+## Terminal 1 - Webserver
 
 ```bash
 source ~/Documents/Projects/airflow_venv/bin/activate
@@ -73,7 +126,9 @@ export AIRFLOW_HOME=~/airflow
 airflow webserver --port 8080
 ```
 
-### Terminal 2 - Scheduler
+---
+
+## Terminal 2 - Scheduler
 
 ```bash
 source ~/Documents/Projects/airflow_venv/bin/activate
@@ -83,7 +138,11 @@ export AIRFLOW_HOME=~/airflow
 airflow scheduler
 ```
 
-Open in browser:
+---
+
+# 8. Open Airflow UI
+
+Open:
 
 ```text
 http://localhost:8080
@@ -93,39 +152,44 @@ Login using your Airflow credentials.
 
 ---
 
-## 5. Trigger ETL Pipeline from Airflow
+# 9. Trigger ETL Workflow
 
-1. Open Airflow UI
-2. Search for:
+1. Search for:
 
 ```text
 sales_etl_pipeline
 ```
 
-3. Enable the DAG
-4. Click **Trigger DAG**
+2. Enable the DAG.
+3. Click **Trigger DAG**.
 
-Airflow will automatically execute the ETL workflow.
-
----
-
-## Useful URLs
-
-### Streamlit Dashboard
-
-```text
-http://localhost:8501
-```
-
-### Apache Airflow
-
-```text
-http://localhost:8080
-```
+Airflow will automatically execute the ETL pipeline.
 
 ---
 
-## Check Logs
+# Verify Data in PostgreSQL
+
+Connect:
+
+```bash
+sudo -u postgres psql -d sales_db
+```
+
+Check sales data:
+
+```sql
+SELECT COUNT(*) FROM sales;
+```
+
+Check product data:
+
+```sql
+SELECT COUNT(*) FROM products;
+```
+
+---
+
+# View Pipeline Logs
 
 ```bash
 cat logs/pipeline.log
@@ -140,32 +204,56 @@ INFO - Pipeline Completed
 
 ---
 
-## Verify Data in PostgreSQL
+# Project Architecture
 
-```bash
-sudo -u postgres psql -d sales_db
+```text
+                 +----------------+
+                 | sales.csv      |
+                 +----------------+
+                          |
+                          v
+                 +----------------+
+                 | ETL Pipeline   |
+                 +----------------+
+                          |
+                          v
+                 +----------------+
+                 | PostgreSQL     |
+                 +----------------+
+                          ^
+                          |
+                 +----------------+
+                 | Fake Store API |
+                 +----------------+
+
+                          |
+                          v
+
+                 +----------------+
+                 | Apache Airflow |
+                 +----------------+
+
+                          |
+                          v
+
+                 +----------------+
+                 | Streamlit      |
+                 | Dashboard      |
+                 +----------------+
 ```
 
-Run:
+---
 
-```sql
-SELECT COUNT(*) FROM sales;
+# Useful URLs
+
+### Streamlit Dashboard
+
+```text
+http://localhost:8501
 ```
-# Sales Data Pipeline
 
-An end-to-end Data Engineering project that:
+### Apache Airflow
 
-- Extracts sales data from CSV files
-- Cleans and transforms the data
-- Loads it into PostgreSQL
-- Generates reports
-- Displays dashboards
-- Automates workflows using Apache Airflow
-
-## Tech Stack
-
-- Python
-- Pandas
-- PostgreSQL
-- SQLAlchemy
-- Streamlit
+```text
+http://localhost:8080
+```
